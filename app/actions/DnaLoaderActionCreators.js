@@ -1,8 +1,7 @@
 'use strict';
 var AppDispatcher = require('../dispatcher/AppDispatcher.js'),
     AppConstants  = require('../constants/AppConstants.js'),
-    Tokenizer     = require('../../../src/dnainterpreter/tokenizer.js'),
-    Parser        = require('../../../src/dnainterpreter/parser.js'),
+    DarwinBots    = require('darwinbots.js'),
 
     ActionTypes = AppConstants.ActionTypes;
 
