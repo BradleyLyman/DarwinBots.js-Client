@@ -14,6 +14,11 @@
 
   injectTapEventPlugin();
 
+  require('./css/grid/html5reset.css');
+  require('./css/grid/col.css');
+  require('./css/grid/12cols.css');
+  require('./css/main.css');
+
   Router.run(routes, function(Handler) {
     React.render(<Handler />, document.body);
   });
