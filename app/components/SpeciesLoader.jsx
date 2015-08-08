@@ -7,11 +7,10 @@ var React     = require('react'),
 module.exports = React.createClass({
   render : function() {
     return (
-      <Card expandable={false}>
-        <CardTitle title="Welcome to DarwinBots.js" />
+      <Card>
+        <CardTitle title="Load Species" />
         <CardText>
-          This is a web and mobile-first implementation of the
-          popular DarwinBots game.
+          aoeu
         </CardText>
       </Card>
     );

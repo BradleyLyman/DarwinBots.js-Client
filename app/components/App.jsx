@@ -43,6 +43,7 @@ module.exports = React.createClass({
   menuItems : function() {
     return [
       { text : 'About', route : 'about' },
+      { text : 'Species Loader', route : 'speciesLoader' }
     ];
   },
 

@@ -4,11 +4,15 @@
       injectTapEventPlugin = require('react-tap-event-plugin'),
       App                  = require('./components/App.jsx'),
       About                = require('./components/About.jsx'),
-      Route                = Router.Route;
+      SpeciesLoader        = require('./components/SpeciesLoader.jsx'),
+      Route                = Router.Route,
+      Redirect             = Router.Redirect;
 
   var routes = (
     <Route name="app" path="/" handler={App}>
       <Route name="about" handler={About} />
+      <Route name="speciesLoader" handler={SpeciesLoader} />
+      <Redirect from="" to="about" />
     </Route>
   );
 
