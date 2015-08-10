@@ -5,6 +5,7 @@
       App                  = require('./components/App.jsx'),
       About                = require('./components/About.jsx'),
       SpeciesLoader        = require('./components/SpeciesLoader.jsx'),
+      SpeciesDebugger      = require('./components/SpeciesDebugger.jsx'),
       Route                = Router.Route,
       Redirect             = Router.Redirect;
 
@@ -12,6 +13,7 @@
     <Route name="app" path="/" handler={App}>
       <Route name="about" handler={About} />
       <Route name="speciesLoader" handler={SpeciesLoader} />
+      <Route name="speciesDebugger" path="/speciesDebugger/:speciesName" handler={SpeciesDebugger} />
       <Redirect from="" to="about" />
     </Route>
   );

@@ -29,7 +29,11 @@ var SpeciesStore = assign({}, EventEmitter.prototype, {
 SpeciesStore.dispatcherToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case ActionTypes.get("LoadSpecies"):
-      console.log("load species");
+      _speciesMap = _speciesMap.set(action.name, Immutable.Map({
+        source : action.source,
+        cmd    : action.cmd
+      }));
+      SpeciesStore.emitChange();
       break;
 
     default:

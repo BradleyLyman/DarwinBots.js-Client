@@ -5,13 +5,51 @@ var React                       = require('react'),
     Card                        = mui.Card,
     CardTitle                   = mui.CardTitle,
     CardText                    = mui.CardText,
-    RaisedButton                = mui.RaisedButton;
+    RaisedButton                = mui.RaisedButton,
+    List                        = mui.List,
+    ListItem                    = mui.ListItem;
 
 module.exports = React.createClass({
+  contextTypes : {
+    router : React.PropTypes.func
+  },
+
+  getInitialState : function() {
+    return {
+      speciesMap : SpeciesStore.getSpeciesMap()
+    };
+  },
+
+  componentWillMount : function() {
+    console.log("SpeciesLoader mounted");
+    SpeciesStore.addChangeListener(this._onSpeciesChange);
+  },
+
+  componentWillUnmount : function() {
+    console.log("SpeciesLoader unmounted");
+    SpeciesStore.removeChangeListener(this._onSpeciesChange);
+  },
+
   render : function() {
+    var router = this.context.router;
+    var speciesList = this.state.speciesMap.map(function(payload, key) {
+      var toDebug = function() { router.transitionTo("/speciesDebugger/" + key); };
+
+      return <ListItem
+        key={key}
+        primaryText={key}
+        secondaryText={payload.get("source")}
+        onClick={toDebug} />;
+    }).toList();
+
     return (
       <Card>
         <CardTitle title="Load Species" />
+        <CardText>
+          <List>
+            {speciesList}
+          </List>
+        </CardText>
         <CardText>
 
           <label htmlFor="filePicker">
@@ -33,7 +71,19 @@ module.exports = React.createClass({
   },
 
   _fileChange : function(e) {
-    console.log(e.nativeEvent.srcElement.files[0].name);
+    SpeciesLoaderActionCreators.loadSpeciesFile(e.nativeEvent.srcElement.files[0]);
     this.refs.filePicker.getDOMNode().value = "";
+  },
+
+  _onSpeciesChange : function() {
+    this.setState({
+      speciesMap : SpeciesStore.getSpeciesMap()
+    });
   }
 });
+
+
+
+
+
+
