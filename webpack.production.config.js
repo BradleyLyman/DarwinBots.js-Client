@@ -1,15 +1,11 @@
 var path                 = require('path'),
     node_modules         = path.resolve(__dirname, 'node_modules'),
-    pathToMaterializeCss = path.resolve(node_modules, 'materialize-css/bin/materialize.css'),
-    pathToMaterializeJs  = path.resolve(node_modules, 'materialize-css/bin/materialize.js'),
     HtmlWebpackPlugin    = require('html-webpack-plugin');
 
 module.exports = {
   entry  : [path.resolve(__dirname, 'app/main.js')],
   resolve : {
     alias : {
-      'materialize.css' : pathToMaterializeCss,
-      'materialize.js'  : pathToMaterializeJs
     }
   },
   output : {
@@ -31,7 +27,7 @@ module.exports = {
         loader : 'url?limit=100000'
       }, {
         test   : /\.ttf$/,
-        loader : 'url?limit=10'
+        loader : 'url?limit=100000'
       }, {
         test   : /\.svg$/,
         loader : 'url?limit=100000'
