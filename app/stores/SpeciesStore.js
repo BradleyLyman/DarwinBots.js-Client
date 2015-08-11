@@ -6,7 +6,11 @@ var AppDispatcher = require('../dispatcher/AppDispatcher.js'),
     Immutable     = require('immutable');
 
 var CHANGE      = "change";
-var _speciesMap = Immutable.Map();
+var _speciesMap = Immutable.fromJS(
+  JSON.parse(localStorage.getItem('speciesStore') || "{}")
+);
+
+console.log(JSON.stringify(_speciesMap.toJS()));
 
 var SpeciesStore = assign({}, EventEmitter.prototype, {
   addChangeListener : function(callback) {
@@ -33,6 +37,7 @@ SpeciesStore.dispatcherToken = AppDispatcher.register(function(action) {
         source : action.source,
         cmd    : action.cmd
       }));
+      localStorage.setItem('speciesStore', JSON.stringify(_speciesMap.toJS()));
       SpeciesStore.emitChange();
       break;
 

@@ -34,11 +34,12 @@ module.exports = React.createClass({
     var router = this.context.router;
     var speciesList = this.state.speciesMap.map(function(payload, key) {
       var toDebug = function() { router.transitionTo("/speciesDebugger/" + key); };
+      var source = <pre>{payload.get("source")}</pre>;
 
       return <ListItem
         key={key}
         primaryText={key}
-        secondaryText={payload.get("source")}
+        secondaryText={source}
         onClick={toDebug} />;
     }).toList();
 

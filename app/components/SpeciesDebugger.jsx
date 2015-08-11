@@ -21,7 +21,8 @@ module.exports = React.createClass({
 
     return {
       name : name,
-      source : species.get("source")
+      source : species.get("source"),
+      cmd : species.get("cmd")
     };
   },
 
