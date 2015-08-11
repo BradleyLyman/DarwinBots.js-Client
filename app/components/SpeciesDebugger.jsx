@@ -5,7 +5,10 @@ var React        = require('react'),
     mui          = require('material-ui'),
     Card         = mui.Card,
     CardText     = mui.CardText,
-    CardTitle    = mui.CardTitle;
+    CardTitle    = mui.CardTitle,
+    List         = mui.List,
+    ListItem     = mui.ListItem,
+    RaisedButton = mui.RaisedButton;
 
 module.exports = React.createClass({
   contextTypes : {
@@ -20,9 +23,10 @@ module.exports = React.createClass({
     }
 
     return {
-      name : name,
-      source : species.get("source"),
-      cmd : species.get("cmd")
+      name    : name,
+      source  : species.get("source"),
+      cmd     : species.get("cmd"),
+      sysvars : {}
     };
   },
 
@@ -35,12 +39,20 @@ module.exports = React.createClass({
     }
 
     this.setState({
-      name   : name,
-      source : species.get("source")
+      name    : name,
+      source  : species.get("source"),
+      cmd     : species.get("cmd"),
+      sysvars : {}
     });
   },
 
   render : function() {
+    var sysvars    = this.state.sysvars;
+    var sysvarList = Object.getOwnPropertyNames(sysvars).map(function(name) {
+      var primaryText = name + " : " + sysvars[name];
+      return <ListItem key={name} primaryText={primaryText} />;
+    });
+
     return (
       <Card>
         <CardTitle title={this.state.name} />
@@ -50,9 +62,21 @@ module.exports = React.createClass({
               <Card>
                 <CardTitle title="Source"/>
                 <CardText>
+                  <RaisedButton primary={true} label="Run Dna" onClick={this._runDna} />
+                </CardText>
+                <CardText>
                   <pre>
                   {this.state.source}
                   </pre>
+                </CardText>
+              </Card>
+            </div>
+
+            <div className="col span_6_of_12">
+              <Card>
+                <CardTitle title="Sysvars" />
+                <CardText>
+                  <List>{sysvarList}</List>
                 </CardText>
               </Card>
             </div>
@@ -63,5 +87,14 @@ module.exports = React.createClass({
         </CardText>
       </Card>
     );
+  },
+
+  _runDna : function() {
+    var sysvars = this.state.sysvars;
+    this.state.cmd(sysvars);
+
+    this.setState({
+      sysvars : sysvars
+    });
   }
 });

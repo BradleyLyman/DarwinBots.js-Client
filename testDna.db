@@ -1,0 +1,17 @@
+cond
+start
+  1 *.up add .up store
+stop
+
+cond
+  *.up 5 >
+start
+  *.up .right store
+stop
+
+cond
+  *.right 10 >
+start
+  *.right 3 sub .body store
+stop
+
