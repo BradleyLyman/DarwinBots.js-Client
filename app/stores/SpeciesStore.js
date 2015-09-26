@@ -1,27 +1,18 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher.js'),
     AppConstants  = require('../constants/AppConstants.js'),
-    DarwinBots    = require('darwinbots.js'),
+    Species       = require('./SpeciesStore/Species.js'),
     ActionTypes   = AppConstants.ActionTypes,
     EventEmitter  = require('events'),
     assign        = require('object-assign'),
     Immutable     = require('immutable');
 
 var CHANGE      = "change";
+
 var _speciesMap = Immutable.fromJS(
   JSON.parse(localStorage.getItem('speciesStore') || "{}")
-);
-
-// Parse dna in local storage, keep whatever correctly parses
-_speciesMap = _speciesMap.reduce(function(map, value, key) {
-  var tokens      = DarwinBots.Tokenizer.tokenize(value.get('source')),
-      parseResult = DarwinBots.Parser.parseDna(tokens);
-
-  if (parseResult.error !== null) {
-    return map;
-  }
-
-  return map.set(key, value.set('cmd', parseResult.result));
-}, Immutable.Map());
+).map(function(value, key) {
+  return Species.create(value.get('rawSource'), key);
+});
 
 var SpeciesStore = assign({}, EventEmitter.prototype, {
   addChangeListener : function(callback) {
@@ -41,13 +32,14 @@ var SpeciesStore = assign({}, EventEmitter.prototype, {
   }
 });
 
+
 SpeciesStore.dispatcherToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case ActionTypes.get("LoadSpecies"):
-      _speciesMap = _speciesMap.set(action.name, Immutable.Map({
-        source : action.source,
-        cmd    : action.cmd
-      }));
+      _speciesMap = _speciesMap.set(action.name,
+        Species.create(action.rawSource, action.name)
+      );
+
       localStorage.setItem('speciesStore', JSON.stringify(_speciesMap.toJS()));
       SpeciesStore.emitChange();
       break;
@@ -57,6 +49,7 @@ SpeciesStore.dispatcherToken = AppDispatcher.register(function(action) {
       break;
   }
 });
+
 
 module.exports = SpeciesStore;
 

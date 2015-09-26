@@ -23,9 +23,7 @@ module.exports = React.createClass({
     }
 
     return {
-      name    : name,
-      source  : species.get("source"),
-      cmd     : species.get("cmd"),
+      species : species,
       sysvars : {}
     };
   },
@@ -39,9 +37,7 @@ module.exports = React.createClass({
     }
 
     this.setState({
-      name    : name,
-      source  : species.get("source"),
-      cmd     : species.get("cmd"),
+      species : species,
       sysvars : {}
     });
   },
@@ -53,39 +49,61 @@ module.exports = React.createClass({
       return <ListItem key={name} primaryText={primaryText} />;
     });
 
-    return (
-      <Card>
-        <CardTitle title={this.state.name} />
-        <CardText>
-          <div className="section group">
-            <div className="col span_6_of_12">
-              <Card>
-                <CardTitle title="Source"/>
-                <CardText>
-                  <RaisedButton primary={true} label="Run Dna" onClick={this._runDna} />
-                </CardText>
-                <CardText>
-                  <pre>
-                  {this.state.source}
-                  </pre>
-                </CardText>
-              </Card>
-            </div>
+    var errText;
 
-            <div className="col span_6_of_12">
-              <Card>
-                <CardTitle title="Sysvars" />
-                <CardText>
-                  <List>{sysvarList}</List>
-                </CardText>
-              </Card>
-            </div>
-          </div>
-        </CardText>
+    if (this.state.species.error !== undefined) {
+      errText = (
         <CardText>
-          <Link to="speciesLoader">Back to species list</Link>
+          <pre>
+            {this.state.species.error}
+          </pre>
+          <hr />
+        </CardText>
+      );
+    }
+
+    var srcCard = (
+      <Card>
+        <CardTitle title={this.state.species.name}/>
+        {errText}
+        <CardText>
+          <pre>
+          {this.state.species.rawSource}
+          </pre>
         </CardText>
       </Card>
+    );
+
+    var runDna;
+
+    if (this.state.species.error === undefined) {
+      runDna = (
+        <CardText>
+          <RaisedButton primary={true} label="Run Dna" onClick={this._runDna} />
+        </CardText>
+      );
+    }
+
+    return (
+      <div>
+        <div className="section group">
+          <div className="col span_6_of_12">
+            {srcCard}
+          </div>
+
+          <div className="col span_6_of_12">
+            <Card>
+              <CardTitle title="Sysvars" />
+              {runDna}
+              <CardText>
+                <List>{sysvarList}</List>
+              </CardText>
+            </Card>
+          </div>
+        </div>
+
+        <Link to="speciesLoader" style={{ paddingBottom : '20px' }}>Back to species list</Link>
+      </div>
     );
   },
 

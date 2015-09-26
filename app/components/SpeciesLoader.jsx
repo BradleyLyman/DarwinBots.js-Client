@@ -34,7 +34,7 @@ module.exports = React.createClass({
     var router = this.context.router;
     var speciesList = this.state.speciesMap.map(function(payload, key) {
       var toDebug = function() { router.transitionTo("/speciesDebugger/" + key); };
-      var source = <pre>{payload.get("source")}</pre>;
+      var source = <pre>{payload.error || payload.rawSource}</pre>;
 
       return <ListItem
         key={key}
