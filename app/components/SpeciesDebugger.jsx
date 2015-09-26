@@ -109,7 +109,7 @@ module.exports = React.createClass({
 
   _runDna : function() {
     var sysvars = this.state.sysvars;
-    this.state.cmd(sysvars);
+    this.state.species.dnaCmd(sysvars);
 
     this.setState({
       sysvars : sysvars
