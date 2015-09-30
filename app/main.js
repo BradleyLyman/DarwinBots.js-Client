@@ -1,31 +1,11 @@
 (function() {
-  var React                = require('react'),
-      Router               = require('react-router'),
-      injectTapEventPlugin = require('react-tap-event-plugin'),
-      App                  = require('./components/App.jsx'),
-      About                = require('./components/About.jsx'),
-      SpeciesLoader        = require('./components/SpeciesLoader.jsx'),
-      SpeciesDebugger      = require('./components/SpeciesDebugger.jsx'),
-      Route                = Router.Route,
-      Redirect             = Router.Redirect;
+  var React  = require('react'),
+      Routes = require('./Routes.jsx');
 
-  var routes = (
-    <Route name="app" path="/" handler={App}>
-      <Route name="about" handler={About} />
-      <Route name="speciesLoader" handler={SpeciesLoader} />
-      <Route name="speciesDebugger" path="/speciesDebugger/:speciesName" handler={SpeciesDebugger} />
-      <Redirect from="" to="about" />
-    </Route>
-  );
+  require('react-tap-event-plugin')();
 
-  injectTapEventPlugin();
-
-  require('./css/grid/html5reset.css');
-  require('./css/grid/col.css');
-  require('./css/grid/12cols.css');
+  require('./css/html5reset.css');
   require('./css/main.css');
 
-  Router.run(routes, function(Handler) {
-    React.render(<Handler />, document.body);
-  });
+  React.render(Routes, document.body );
 }());

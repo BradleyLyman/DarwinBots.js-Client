@@ -1,34 +1,16 @@
-var Router       = require('react-router'),
-    React        = require('react'),
-    RouteHandler = Router.RouteHandler,
-    mui          = require('material-ui'),
-    Colors       = mui.Styles.Colors,
-    ThemeManager = new mui.Styles.ThemeManager(),
-    AppBar       = mui.AppBar,
-    LeftNav      = mui.LeftNav;
+var React       = require('react'),
+    ReactRouter = require('react-router'),
+    History     = ReactRouter.History,
+    State       = ReactRouter.State,
+    Theme       = require('./Theme.js'),
+    AppBar      = require('material-ui/lib/app-bar'),
+    MenuItem    = require('material-ui/lib/menus/menu-item'),
+    IconMenu    = require('material-ui/lib/menus/icon-menu'),
+    IconButton  = require('material-ui/lib/icon-button'),
+    Paper       = require('material-ui/lib/paper');
 
-var theme = {
-  getPalette : function() {
-    return {
-      primary1Color: Colors.blueGrey500,
-      primary2Color: Colors.blueGrey700,
-      primary3Color: Colors.blueGrey100,
-      accent1Color: Colors.indigoA200,
-      accent2Color: Colors.indigoA400,
-      accent3Color: Colors.indigoA100,
-    };
-  },
-
-  getComponentThemes : function() {
-    return {};
-  }
-};
-ThemeManager.setTheme(theme);
-
-module.exports = React.createClass({
-  contextTypes : {
-    router : React.PropTypes.func
-  },
+var App = React.createClass({
+  mixins : [History, State],
 
   childContextTypes : {
     muiTheme : React.PropTypes.object
@@ -36,56 +18,41 @@ module.exports = React.createClass({
 
   getChildContext : function() {
     return {
-      muiTheme : ThemeManager.getCurrentTheme()
+      muiTheme : Theme
     };
   },
 
-  menuItems : function() {
-    return [
-      { text : 'About', route : 'about' },
-      { text : 'Species Loader', route : 'speciesLoader' }
-    ];
+  onNavMenuChange : function(e, value) {
+    this.history.pushState(null, '/' + value);
   },
 
   render : function() {
-    var appBar = (
-      <AppBar
-        title="DarwinBots.js"
-        iconClassnameRight="muidocs-icon-navigation-expand-more"
-        onLeftIconButtonTouchTap={this._onLeftButtonTouchTap} />
+    var menuButton = (
+      <IconButton iconClassName="material-icons">menu</IconButton>
+    );
+
+    var iconMenu = (
+      <IconMenu
+        iconButtonElement={menuButton}
+        openDirection="bottom-right"
+        onChange={this.onNavMenuChange}>
+        <MenuItem primaryText="About" value="about"/>
+        <MenuItem primaryText="New Simulation" value="new_simulation" />
+      </IconMenu>
     );
 
     return (
       <div>
-        {appBar}
+        <AppBar
+          title={'DarwinBots.js: ' + this.props.location.pathname.slice(1)}
+          iconElementLeft={iconMenu} />
 
-        <LeftNav
-          ref="leftNav"
-          menuItems={this.menuItems()}
-          docked={false}
-          header={appBar}
-          onChange={this._onNavBarChange}/>
-
-        <RouteHandler />
+        <Paper>
+          {this.props.children}
+        </Paper>
       </div>
     );
-  },
-
-  _onLeftButtonTouchTap : function() {
-    this.refs.leftNav.toggle();
-  },
-
-  _onNavBarChange : function(event, index, payload) {
-    this.context.router.transitionTo(payload.route);
   }
-
 });
 
-
-
-
-
-
-
-
-
+module.exports = App;

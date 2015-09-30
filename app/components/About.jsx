@@ -1,41 +1,20 @@
-var React     = require('react'),
-    mui       = require('material-ui'),
-    Card      = mui.Card,
-    CardTitle = mui.CardTitle,
-    CardText  = mui.CardText,
-    DemoCode  = require('./DemoCode.js');
+var React = require('react');
 
-module.exports = React.createClass({
+var About = React.createClass({
   render : function() {
     return (
-      <div>
-      <Card expandable={false}>
-        <CardTitle title="Welcome to DarwinBots.js" />
-        <CardText>
-          This is a web and mobile-first implementation of the
-          popular DarwinBots game.
+      <div className="content">
+        <p>Welcome to DarwinBots.js, a web-based implementation
+           of the classic DarwinBots ALife simulation. </p>
 
-          Right now, the only functionality that is available is the DNA
-          parser and debugger. If you are interested, navigate to the
-          SpeciesLoader.
-
-          The DarwinBots syntax has changed from the original!
-          Here is some example code:
-        </CardText>
-        <CardText>
-          <pre>
-            {DemoCode.source}
-          </pre>
-        </CardText>
-        <CardText>
-          Copy this into your favorite text-editor, save it, and you can
-          upload it to see how the compiler and debugger work!
-
-          More information can be found on
-          <a href="https://github.com/BradLyman/DarwinBots.js"> my github page</a>.
-        </CardText>
-      </Card>
+        <p>DarwinBots.js is not yet functinally complete, but progress
+           is being made. Check out the repository at
+           <a href='https://github.com/BradLyman/DarwinBots.Js'> the
+           github page </a>
+           for more information. </p>
       </div>
     );
   }
 });
+
+module.exports = About;
