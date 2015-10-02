@@ -1,18 +1,18 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher.js'),
     ActionTypes   = require('../constants/AppConstants.js').ActionTypes,
     EventEmitter  = require('events'),
-    assign        = require('object-assign');
+    assign        = require('object-assign'),
+    LSUtil        = require('../util/LocalStorageUtil.js');
 
-var CHANGE     = "change";
-var VERSION_ID = "0";
-
-var simulationConfig;
-
-
-var saveConfig = function() {
-  simulationConfig.version = VERSION_ID;
-  localStorage['simulationConfig'] = JSON.stringify(simulationConfig);
-};
+var CHANGE           = "change";
+var simulationConfig = LSUtil.readValue('simulationConfig');
+if (simulationConfig === undefined) {
+  simulationConfig = {
+    initialNrg    : 100,
+    nrgDecayRate  : 2,
+    speciesConfig : []
+  };
+}
 
 var SimulationConfigStore = assign({}, EventEmitter.prototype, {
   addChangeListener : function(callback) {
@@ -25,11 +25,41 @@ var SimulationConfigStore = assign({}, EventEmitter.prototype, {
 
   emitChange : function() {
     this.emit(CHANGE);
+  },
+
+  getInitialNrg : function() {
+    return simulationConfig.initialNrg;
+  },
+
+  getNrgDecayRate : function() {
+    return simulationConfig.nrgDecayRate;
+  },
+
+  getSpeciesConfig : function() {
+    return simulationConfig.speciesConfig;
   }
 });
 
 SimulationConfigStore.dispatcherToken = AppDispatcher.register(function(action) {
   switch (action.type) {
+    case ActionTypes.SetInitialNrg:
+      simulationConfig.initialNrg = action.initialNrg;
+      LSUtil.writeValue('simulationConfig', simulationConfig);
+      SimulationConfigStore.emitChange();
+      break;
+
+    case ActionTypes.SetNrgDecayRate:
+      simulationConfig.nrgDecayRate = action.nrgDecayRate;
+      LSUtil.writeValue('simulationConfig', simulationConfig);
+      SimulationConfigStore.emitChange();
+      break;
+
+    case ActionTypes.SetSpeciesConfig:
+      simulationConfig.speciesConfig = action.speciesConfig;
+      LSUtil.writeValue('simulationConfig', simulationConfig);
+      SimulationConfigStore.emitChange();
+      break;
+
     default:
       // do nothing
       break;
