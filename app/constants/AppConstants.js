@@ -1,6 +1,4 @@
-var Immutable = require('immutable'),
-    keyMirror = require('keymirror');
+var keyMirror = require('keymirror');
 
-module.exports.ActionTypes = Immutable.Map(keyMirror({
-  LoadSpecies : null
-}));
+module.exports.ActionTypes = keyMirror({
+});
