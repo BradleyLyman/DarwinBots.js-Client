@@ -36,10 +36,18 @@ var NewSimulation = React.createClass({
       <Tabs>
         <Tab label="Simulation Parameters">
           <Card>
-            <CardText>
-              <TextField
-                value={this.state.initialNrg}
-                floatingLabelText="Initial Bot Nrg" />
+            <CardText className="row">
+              <div className="col col-4">
+                <TextField
+                  value={this.state.initialNrg}
+                  floatingLabelText="Initial Bot Nrg" />
+              </div>
+
+              <div className="col col-4">
+                <TextField
+                  value={this.state.nrgDecayRate}
+                  floatingLabelText="Rate of Nrg Decay Per Cycle" />
+              </div>
             </CardText>
           </Card>
         </Tab>
