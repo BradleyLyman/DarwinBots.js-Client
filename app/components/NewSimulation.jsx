@@ -1,5 +1,6 @@
 var React                 = require('react'),
-    SimulationConfigStore = require('../stores/SimulationConfigStore.js');
+    SimulationConfigStore = require('../stores/SimulationConfigStore.js'),
+    SCActionCreators      = require('../actions/SimulationConfigActionCreators.js');
 
 var theme     = require('./Theme.js'),
     Card      = require('material-ui/lib/card/card'),
@@ -8,6 +9,15 @@ var theme     = require('./Theme.js'),
     Tabs      = require('material-ui/lib/tabs/tabs'),
     Tab       = require('material-ui/lib/tabs/tab'),
     TextField = require('material-ui/lib/text-field');
+
+var isNumber = function(val) {
+  var num = (+val);
+  if (isNaN(num) || !isFinite(num)) {
+    return false;
+  }
+
+  return true;
+};
 
 var NewSimulation = React.createClass({
   childContextTypes : {
@@ -28,7 +38,18 @@ var NewSimulation = React.createClass({
   },
 
   componentWillMount : function() {
+    SimulationConfigStore.addChangeListener(this.updateState);
+  },
 
+  componentWillUnmount : function() {
+    SimulationConfigStore.removeChangeListener(this.updateState);
+  },
+
+  updateState : function() {
+    this.setState({
+      initialNrg   : SimulationConfigStore.getInitialNrg(),
+      nrgDecayRate : SimulationConfigStore.getNrgDecayRate()
+    });
   },
 
   render : function() {
@@ -40,19 +61,37 @@ var NewSimulation = React.createClass({
               <div className="col col-4">
                 <TextField
                   value={this.state.initialNrg}
-                  floatingLabelText="Initial Bot Nrg" />
+                  floatingLabelText="Initial Bot Nrg"
+                  onChange={this.onInitialNrgChange}
+                  ref="initialNrgInput" />
               </div>
 
               <div className="col col-4">
                 <TextField
                   value={this.state.nrgDecayRate}
-                  floatingLabelText="Rate of Nrg Decay Per Cycle" />
+                  floatingLabelText="Rate of Nrg Decay Per Cycle"
+                  onChange={this.onNrgDecayRateChange}
+                  ref="nrgDecayRateInput" />
               </div>
             </CardText>
           </Card>
         </Tab>
       </Tabs>
     );
+  },
+
+  onInitialNrgChange : function() {
+    var val = this.refs.initialNrgInput.getValue();
+    if (isNumber(val)) {
+      SCActionCreators.setInitialNrg(val);
+    }
+  },
+
+  onNrgDecayRateChange : function() {
+    var val = this.refs.nrgDecayRateInput.getValue();
+    if (isNumber(val)) {
+      SCActionCreators.setNrgDecayRate(val);
+    }
   }
 });
 
