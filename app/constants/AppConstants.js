@@ -6,6 +6,9 @@ module.exports.ActionTypes = keyMirror({
   SetNrgDecayRate  : null,
   SetSpeciesConfig : null,
 
+  // Simulation Actions
+  NewSimulation : null,
+
   // Species Store actions
   AddSpecies : null
 });

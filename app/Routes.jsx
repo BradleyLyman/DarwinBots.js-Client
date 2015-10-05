@@ -6,7 +6,7 @@ var React       = require('react'),
 var App           = require('./components/App.jsx'),
     NoMatch       = require('./components/NoMatch.jsx'),
     About         = require('./components/About.jsx'),
-    NewSimulation = require('./components/NewSimulation.jsx');
+    NewSimulation = require('./components/newSimulation/NewSimulation.jsx');
 
 module.exports = (
   <Router>

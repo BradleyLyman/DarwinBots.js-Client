@@ -4,7 +4,7 @@
  * @module util/LocalStorage
  **/
 
-var version = "1";
+var version = "2";
 
 /**
  * Retrieves the object associated with a key from local storage.

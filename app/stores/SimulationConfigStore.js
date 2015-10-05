@@ -10,7 +10,7 @@ if (simulationConfig === undefined) {
   simulationConfig = {
     initialNrg    : 100,
     nrgDecayRate  : 2,
-    speciesConfig : []
+    speciesConfig : {}
   };
 }
 
@@ -58,6 +58,10 @@ SimulationConfigStore.dispatcherToken = AppDispatcher.register(function(action) 
       simulationConfig.speciesConfig = action.speciesConfig;
       LSUtil.writeValue('simulationConfig', simulationConfig);
       SimulationConfigStore.emitChange();
+      break;
+
+    case ActionTypes.NewSimulation:
+      console.log(simulationConfig);
       break;
 
     default:
