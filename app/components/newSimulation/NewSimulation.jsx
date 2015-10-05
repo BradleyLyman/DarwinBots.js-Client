@@ -6,7 +6,8 @@ var theme            = require('../Theme.js'),
     Tabs             = require('material-ui/lib/tabs/tabs'),
     Tab              = require('material-ui/lib/tabs/tab'),
     RaisedButton     = require('material-ui/lib/raised-button'),
-    ConfigParameters = require('./ConfigParameters.jsx');
+    ConfigParameters = require('./ConfigParameters.jsx'),
+    SpeciesDisplay   = require('../SpeciesDisplay.jsx');
 
 var NewSimulation = React.createClass({
   childContextTypes : {
@@ -45,6 +46,11 @@ var NewSimulation = React.createClass({
     return (
       <div>
         <Tabs>
+          <Tab label="Species Selection">
+            <div className="content">
+              <SpeciesDisplay />
+            </div>
+          </Tab>
           <Tab label="Simulation Parameters">
             <div className="content">
               <ConfigParameters

@@ -10,5 +10,6 @@ module.exports.ActionTypes = keyMirror({
   NewSimulation : null,
 
   // Species Store actions
-  AddSpecies : null
+  AddSpecies    : null,
+  DeleteSpecies : null
 });
