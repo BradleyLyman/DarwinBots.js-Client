@@ -12,6 +12,7 @@ var FloatingActionButton = require('material-ui/lib/floating-action-button'),
 var SpeciesDisplay = React.createClass({
   handleFileUpload : function(e) {
     SpeciesActionCreators.loadSpeciesFile(e.target.files[0]);
+    e.target.value = "";
   },
 
   _openFileDialog : function() {
