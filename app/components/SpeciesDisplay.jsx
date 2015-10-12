@@ -1,6 +1,9 @@
 var React                 = require('react'),
     SpeciesActionCreators = require('../actions/SpeciesActionCreators.js'),
-    SpeciesStore          = require('../stores/SpeciesStore.js');
+    SpeciesStore          = require('../stores/SpeciesStore.js'),
+    SimulationConfigStore = require('../stores/SimulationConfigStore.js'),
+    SimulationConfigActionCreators =
+      require('../actions/SimulationConfigActionCreators.js');
 
 var FloatingActionButton = require('material-ui/lib/floating-action-button'),
     FlatButton           = require('material-ui/lib/flat-button'),
@@ -8,6 +11,7 @@ var FloatingActionButton = require('material-ui/lib/floating-action-button'),
     Card                 = require('material-ui/lib/card/card'),
     CardText             = require('material-ui/lib/card/card-text'),
     CardTitle            = require('material-ui/lib/card/card-title'),
+    CardHeader           = require('material-ui/lib/card/card-header'),
     TextField            = require('material-ui/lib/text-field');
 
 /**
@@ -19,37 +23,62 @@ var forEachProperty = function(object, callback) {
   });
 };
 
+var isNumber = function(val) {
+  var numval = +val;
+
+  if (isNaN(numval) || !isFinite(numval)) {
+    return false;
+  }
+  return true;
+};
+
 var SpeciesCard = React.createClass({
   render : function() {
+    var config  = this.props.speciesConfig || { initialPopulation : 0 };
     var species = this.props.species;
     var actionItem = (
-      <div className="row">
-        <div className="col col-6">
-          <TextField
-            floatingLabelText="Amount In Simulation" />
-        </div>
-      </div>
+      <TextField
+        floatingLabelText="Amount In Simulation"
+        value={config.initialPopulation}
+        onChange={function(val) {
+          if (isNumber(val.target.value)) {
+            SimulationConfigActionCreators.setSpeciesInitialPopulation(
+              species.name, val.target.value
+            );
+          }
+        }}/>
     );
 
-    if (!this.props.species.isValid) {
+    if (!species.isValid) {
       actionItem = (
-        <p>
-          Cannot use species, there was an error during compilation.
-        </p>
+        <div>
+          <p>Cannot use species -- compiler error:</p>
+          <br />
+          <pre>{species.compileErr}</pre>
+        </div>
       );
     }
 
     return (
-      <Card>
-        <CardTitle>{species.name}</CardTitle>
-        <CardText>
-          {actionItem}
-        </CardText>
-        <CardText>
-          <FlatButton label="remove" onClick={
-            function() {
-              SpeciesActionCreators.deleteSpecies(species.name);
-            }}/>
+      <Card initiallyExpanded={false}>
+        <CardHeader
+          avatar={<div/>}
+          showExpandableButton={true}
+          actAsExpander={true}>
+          <p style={{ fontSize : '1.2em' }}>{species.name}</p>
+        </CardHeader>
+
+        <CardText expandable={true}>
+          <div className="row">
+            {actionItem}
+            <br />
+          </div>
+          <div className="row">
+            <FlatButton label="remove" onClick={
+              function() {
+                SpeciesActionCreators.deleteSpecies(species.name);
+              }}/>
+          </div>
         </CardText>
       </Card>
     );
@@ -69,31 +98,46 @@ var SpeciesDisplay = React.createClass({
 
   getInitialState : function() {
     return {
-      speciesMap : SpeciesStore.getSpeciesMap()
+      speciesMap    : SpeciesStore.getSpeciesMap(),
+      speciesConfig : SimulationConfigStore.getSpeciesConfig()
     };
   },
 
   _onStoreUpdate : function() {
     this.setState({
-      speciesMap : SpeciesStore.getSpeciesMap()
+      speciesMap : SpeciesStore.getSpeciesMap(),
+    });
+  },
+
+  _onConfigUpdate : function() {
+    this.setState({
+      speciesConfig : SimulationConfigStore.getSpeciesConfig()
     });
   },
 
   componentWillMount : function() {
     SpeciesStore.addChangeListener(this._onStoreUpdate);
+    SimulationConfigStore.addChangeListener(this._onConfigUpdate);
   },
 
   componentWillUnmount : function() {
     SpeciesStore.removeChangeListener(this._onStoreUpdate);
+    SimulationConfigStore.removeChangeListener(this._onConfigUpdate);
   },
 
   render : function() {
     var _openFileDialog = this._openFileDialog;
     var speciesMap = this.state.speciesMap;
+    var speciesConfig = this.state.speciesConfig;
     var speciesCards = [];
 
     forEachProperty(speciesMap, function(species, name) {
-      speciesCards.push(<SpeciesCard species={species} key={name} />);
+      speciesCards.push(
+        <SpeciesCard
+          species={species}
+          speciesConfig={speciesConfig[name]}
+          key={name} />
+      );
     });
 
     return (

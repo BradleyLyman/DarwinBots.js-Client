@@ -26,4 +26,17 @@ module.exports = {
     });
   },
 
+  /**
+   * Creates and dispatches an action to set the species' initialPopulation
+   * in the sim config.
+   * @param {String} speciesName
+   * @param {Number} initialPopulation
+   **/
+  setSpeciesInitialPopulation : function(speciesName, initialPopulation) {
+    AppDispatcher.dispatch({
+      type              : ActionTypes.SetSpeciesInitialPopulation,
+      speciesName       : speciesName,
+      initialPopulation : initialPopulation
+    });
+  }
 };
