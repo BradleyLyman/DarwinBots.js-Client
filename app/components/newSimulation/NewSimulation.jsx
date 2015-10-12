@@ -1,6 +1,8 @@
-var React                    = require('react'),
-    SimulationConfigStore    = require('../../stores/SimulationConfigStore.js'),
-    SimActionCreators = require('../../actions/SimulationActionCreators.js');
+var React                 = require('react'),
+    ReactRouter           = require('react-router'),
+    History               = ReactRouter.History,
+    SimulationConfigStore = require('../../stores/SimulationConfigStore.js'),
+    SimActionCreators     = require('../../actions/SimulationActionCreators.js');
 
 var theme            = require('../Theme.js'),
     Tabs             = require('material-ui/lib/tabs/tabs'),
@@ -10,6 +12,8 @@ var theme            = require('../Theme.js'),
     SpeciesDisplay   = require('../SpeciesDisplay.jsx');
 
 var NewSimulation = React.createClass({
+  mixins : [History],
+
   childContextTypes : {
     muiTheme : React.PropTypes.object
   },
@@ -43,6 +47,7 @@ var NewSimulation = React.createClass({
   },
 
   render : function() {
+    var history = this.history;
     return (
       <div>
         <Tabs>
@@ -66,6 +71,7 @@ var NewSimulation = React.createClass({
             primary={true}
             onClick={function() {
               SimActionCreators.createNewSimulation();
+              history.pushState(null, '/simulation');
             }} />
         </div>
       </div>
