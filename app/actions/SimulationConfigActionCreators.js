@@ -24,5 +24,6 @@ module.exports = {
       type         : ActionTypes.SetNrgDecayRate,
       nrgDecayRate : nrgDecayRate
     });
-  }
+  },
+
 };

@@ -7,9 +7,54 @@ var FloatingActionButton = require('material-ui/lib/floating-action-button'),
     FontIcon             = require('material-ui/lib/font-icon'),
     Card                 = require('material-ui/lib/card/card'),
     CardText             = require('material-ui/lib/card/card-text'),
-    CardHeader           = require('material-ui/lib/card/card-header'),
-    TextField            = require('material-ui/lib/text-field'),
-    SourceCode           = require('./SourceCode.jsx');
+    CardTitle            = require('material-ui/lib/card/card-title'),
+    TextField            = require('material-ui/lib/text-field');
+
+/**
+ * Applies the callback to each property in object.
+ **/
+var forEachProperty = function(object, callback) {
+  Object.keys(object).forEach(function(name) {
+    callback(object[name], name);
+  });
+};
+
+var SpeciesCard = React.createClass({
+  render : function() {
+    var species = this.props.species;
+    var actionItem = (
+      <div className="row">
+        <div className="col col-6">
+          <TextField
+            floatingLabelText="Amount In Simulation" />
+        </div>
+      </div>
+    );
+
+    if (!this.props.species.isValid) {
+      actionItem = (
+        <p>
+          Cannot use species, there was an error during compilation.
+        </p>
+      );
+    }
+
+    return (
+      <Card>
+        <CardTitle>{species.name}</CardTitle>
+        <CardText>
+          {actionItem}
+        </CardText>
+        <CardText>
+          <FlatButton label="remove" onClick={
+            function() {
+              SpeciesActionCreators.deleteSpecies(species.name);
+            }}/>
+        </CardText>
+      </Card>
+    );
+  }
+});
 
 var SpeciesDisplay = React.createClass({
   handleFileUpload : function(e) {
@@ -45,46 +90,10 @@ var SpeciesDisplay = React.createClass({
   render : function() {
     var _openFileDialog = this._openFileDialog;
     var speciesMap = this.state.speciesMap;
-    var speciesNames = Object.getOwnPropertyNames(this.state.speciesMap);
     var speciesCards = [];
 
-    speciesNames.forEach(function(name, index) {
-      var species = speciesMap[name];
-      var speciesCard = (
-        <Card key={index} initiallyExpanded={false}>
-          <CardHeader
-            showExpandableButton={true}
-            avatar={<div/>}>
-            <div className="row">
-              <div className="col col-4">
-                <p style={{ fontSize : '1.3em' }}>{name}</p>
-              </div>
-              <div className="col col-8">
-                <TextField
-                  floatingLabelText="Amount in Simulation"
-                  />
-              </div>
-            </div>
-          </CardHeader>
-
-          <CardText expandable={true}>
-            <div className="row">
-              <div className="col col-6">
-                <FlatButton
-                  secondary={true}
-                  label="remove"
-                  onClick={function() {
-                    SpeciesActionCreators.deleteSpecies(name);
-                  }}/>
-              </div>
-            </div>
-            <pre>{species.compileErr}</pre>
-            <hr />
-            <SourceCode sourceCode={species.rawSource} />
-          </CardText>
-        </Card>
-      );
-      speciesCards.push(speciesCard);
+    forEachProperty(speciesMap, function(species, name) {
+      speciesCards.push(<SpeciesCard species={species} key={name} />);
     });
 
     return (

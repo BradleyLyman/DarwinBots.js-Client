@@ -2,9 +2,8 @@ var keyMirror = require('keymirror');
 
 module.exports.ActionTypes = keyMirror({
   // Simulation Config actions
-  SetInitialNrg    : null,
-  SetNrgDecayRate  : null,
-  SetSpeciesConfig : null,
+  SetInitialNrg           : null,
+  SetNrgDecayRate         : null,
 
   // Simulation Actions
   NewSimulation : null,
