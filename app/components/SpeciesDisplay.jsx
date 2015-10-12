@@ -7,7 +7,9 @@ var FloatingActionButton = require('material-ui/lib/floating-action-button'),
     FontIcon             = require('material-ui/lib/font-icon'),
     Card                 = require('material-ui/lib/card/card'),
     CardText             = require('material-ui/lib/card/card-text'),
-    CardHeader           = require('material-ui/lib/card/card-header');
+    CardHeader           = require('material-ui/lib/card/card-header'),
+    TextField            = require('material-ui/lib/text-field'),
+    SourceCode           = require('./SourceCode.jsx');
 
 var SpeciesDisplay = React.createClass({
   handleFileUpload : function(e) {
@@ -53,16 +55,20 @@ var SpeciesDisplay = React.createClass({
           <CardHeader
             showExpandableButton={true}
             avatar={<div/>}>
-            <p style={{ fontSize : '1.3em' }}>{name}</p>
+            <div className="row">
+              <div className="col col-4">
+                <p style={{ fontSize : '1.3em' }}>{name}</p>
+              </div>
+              <div className="col col-8">
+                <TextField
+                  floatingLabelText="Amount in Simulation"
+                  />
+              </div>
+            </div>
           </CardHeader>
 
           <CardText expandable={true}>
             <div className="row">
-              <div className="col col-6">
-                <FlatButton
-                  label="reupload"
-                  onClick={_openFileDialog} />
-              </div>
               <div className="col col-6">
                 <FlatButton
                   secondary={true}
@@ -74,7 +80,7 @@ var SpeciesDisplay = React.createClass({
             </div>
             <pre>{species.compileErr}</pre>
             <hr />
-            <pre>{species.rawSource}</pre>
+            <SourceCode sourceCode={species.rawSource} />
           </CardText>
         </Card>
       );
