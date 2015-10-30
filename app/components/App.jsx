@@ -37,6 +37,7 @@ var App = React.createClass({
         openDirection="bottom-right"
         onChange={this.onNavMenuChange}>
         <MenuItem primaryText="About" value="about"/>
+        <MenuItem primaryText="Debugger" value="debugger" />
       </IconMenu>
     );
 

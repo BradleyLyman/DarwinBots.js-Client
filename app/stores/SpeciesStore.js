@@ -5,6 +5,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher.js'),
     assign        = require('object-assign'),
     LSUtil        = require('../util/LocalStorageUtil.js');
 
+
 var CHANGE = "change";
 var speciesMap = LSUtil.readValue('speciesMap');
 if (speciesMap === undefined) {
@@ -21,6 +22,7 @@ if (speciesMap === undefined) {
 
   speciesMap = newMap;
 }
+
 
 var SpeciesStore = assign({}, EventEmitter.prototype, {
   addChangeListener : function(callback) {
@@ -43,6 +45,7 @@ var SpeciesStore = assign({}, EventEmitter.prototype, {
     return speciesMap;
   }
 });
+
 
 SpeciesStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
