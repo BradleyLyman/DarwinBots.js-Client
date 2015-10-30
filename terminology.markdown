@@ -28,3 +28,6 @@ Simulation
     with a configuration that describes what bots to spawn initially and how
     the rules should be applied.
 
+Debugger
+  : The darwinbots.js-client tool for executing dna and observing results in a
+    controlled environment.
