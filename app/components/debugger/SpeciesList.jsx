@@ -1,18 +1,43 @@
 'use strict';
-let React = require('react');
+let React = require('react'),
+    Theme = require('../Theme.js');
+
+let List       = require('material-ui/lib/lists/list'),
+    ListItem   = require('material-ui/lib/lists/list-item'),
+    IconButton = require('material-ui/lib/icon-button'),
+    FontIcon   = require('material-ui/lib/font-icon');
+
+let SpeciesActionCreators = require('../../actions/SpeciesActionCreators.js');
 
 let SpeciesList = React.createClass({
-  render : function() {
-    let names = Object.keys(this.props.speciesMap);
+  childContextTypes : { muiTheme : React.PropTypes.object },
+  getChildContext   : function() { return { muiTheme : Theme }; },
 
-    let nameDisplay = names.map(name =>
-      <div>{name}</div>
-    );
+  render : function() {
+    let speciesMap = this.props.speciesMap;
+    let names      = Object.keys(speciesMap);
+
+    let nameDisplay = names.map(name => {
+      let species = speciesMap[name];
+
+      let button = (
+        <IconButton onClick={() => SpeciesActionCreators.deleteSpecies(name)}>
+          <FontIcon className="material-icons">clear</FontIcon>
+        </IconButton>
+      );
+
+      let errorOrSuccess = species.compileErr || species.rawSource;
+
+      return <ListItem
+        primaryText={name}
+        secondaryText={errorOrSuccess}
+        rightIconButton={button} />;
+    });
 
     return (
-      <div>
+      <List>
         {nameDisplay}
-      </div>
+      </List>
     );
   },
 });
