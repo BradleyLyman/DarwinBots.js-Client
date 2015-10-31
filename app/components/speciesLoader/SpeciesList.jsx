@@ -1,6 +1,7 @@
 'use strict';
-let React = require('react'),
-    Theme = require('../Theme.js');
+let React       = require('react'),
+    ReactRouter = require('react-router'),
+    Theme       = require('../Theme.js');
 
 let List       = require('material-ui/lib/lists/list'),
     ListItem   = require('material-ui/lib/lists/list-item'),
@@ -10,10 +11,12 @@ let List       = require('material-ui/lib/lists/list'),
 let SpeciesActionCreators = require('../../actions/SpeciesActionCreators.js');
 
 let SpeciesList = React.createClass({
+  mixins : [ReactRouter.History],
   childContextTypes : { muiTheme : React.PropTypes.object },
   getChildContext   : function() { return { muiTheme : Theme }; },
 
   render : function() {
+    let history    = this.history;
     let speciesMap = this.props.speciesMap;
     let names      = Object.keys(speciesMap);
 
@@ -32,7 +35,8 @@ let SpeciesList = React.createClass({
         key={name}
         primaryText={name}
         secondaryText={errorOrSuccess}
-        rightIconButton={button} />;
+        rightIconButton={button}
+        onClick={function() { history.pushState(null, `/debug/${name}`); }}/>;
     });
 
     return (
