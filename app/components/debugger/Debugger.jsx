@@ -2,6 +2,9 @@
 let React = require('react'),
     SpeciesStore = require('../../stores/SpeciesStore.js');
 
+let SpeciesList      = require('./SpeciesList.jsx'),
+    AddSpeciesButton = require('./AddSpeciesButton.jsx');
+
 let Debugger = React.createClass({
   getInitialState : function() {
     return {
@@ -19,7 +22,10 @@ let Debugger = React.createClass({
 
   render : function() {
     return (
-      <div className="content"> aoeu </div>
+      <div className="content">
+        <SpeciesList speciesMap={this.state.speciesMap} />
+        <AddSpeciesButton />
+      </div>
     );
   },
 
