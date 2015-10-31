@@ -29,6 +29,7 @@ let SpeciesList = React.createClass({
       let errorOrSuccess = species.compileErr || species.rawSource;
 
       return <ListItem
+        key={name}
         primaryText={name}
         secondaryText={errorOrSuccess}
         rightIconButton={button} />;

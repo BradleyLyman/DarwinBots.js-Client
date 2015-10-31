@@ -5,7 +5,7 @@ let React = require('react'),
 let SpeciesList      = require('./SpeciesList.jsx'),
     AddSpeciesButton = require('./AddSpeciesButton.jsx');
 
-let Debugger = React.createClass({
+let SpeciesLoader = React.createClass({
   getInitialState : function() {
     return {
       speciesMap : SpeciesStore.getSpeciesMap()
@@ -36,4 +36,4 @@ let Debugger = React.createClass({
   },
 });
 
-module.exports = Debugger;
+module.exports = SpeciesLoader;
