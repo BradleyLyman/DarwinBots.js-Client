@@ -24,7 +24,11 @@ let SpeciesList = React.createClass({
       let species = speciesMap[name];
 
       let button = (
-        <IconButton onClick={() => SpeciesActionCreators.deleteSpecies(name)}>
+        <IconButton
+          onClick={e => {
+            SpeciesActionCreators.deleteSpecies(name);
+            e.stopPropagation();
+          }}>
           <FontIcon className="material-icons">clear</FontIcon>
         </IconButton>
       );
