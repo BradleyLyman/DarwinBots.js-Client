@@ -13,7 +13,7 @@ let SysvarDisplay = require('./sysvars/SysvarDisplay.jsx'),
 let StepCard = React.createClass({
   getInitialState : function() {
     return {
-      sysvars : { nrg : 100, posX : 10, posY : 11 },
+      sysvars : {},
     };
   },
 
@@ -77,12 +77,16 @@ let StepCard = React.createClass({
         </CardHeader>
 
         <CardText expandable={true}>
-          <RaisedButton
-            label="Execute 1 Cycle"
-            onClick={this._executeDna} />
+          <div className="row">
+            <RaisedButton
+              label="Execute 1 Cycle"
+              onClick={this._executeDna} />
+          </div>
           {sysvarListing}
-          <SysvarAdder
-            addSysvar={this._addSysvar}/>
+          <div className="row">
+            <SysvarAdder
+              addSysvar={this._addSysvar}/>
+          </div>
         </CardText>
       </Card>
     );
@@ -99,12 +103,13 @@ let StepCard = React.createClass({
 
   _executeDna : function() {
     let sysvars = this._sysvarSafeCopy();
+    if (this.props.species.dna !== undefined) {
+      this.props.species.dna.execute(sysvars);
 
-    this.props.species.dna.execute(sysvars);
-
-    this.setState({
-      sysvars : sysvars,
-    });
+      this.setState({
+        sysvars : sysvars,
+      });
+    }
   },
 });
 
