@@ -6,7 +6,8 @@ let React = require('react'),
 let SpeciesStore = require('../../stores/SpeciesStore.js');
 
 let ChooseSpeciesButton = require('./ChooseSpeciesButton.jsx'),
-    SpeciesCard         = require('./SpeciesCard.jsx');
+    SpeciesCard         = require('./SpeciesCard.jsx'),
+    StepCard            = require('./StepCard.jsx');
 
 let Debugger = React.createClass({
   mixins            : [ReactRouter.History],
@@ -34,6 +35,10 @@ let Debugger = React.createClass({
         <div className="row">
           <div className="col col-6">
             <SpeciesCard species={species}/>
+          </div>
+
+          <div className="col col-6">
+            <StepCard species={species}/>
           </div>
         </div>
       </div>
