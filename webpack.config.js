@@ -40,7 +40,7 @@ module.exports = {
   plugins : [
     new HtmlWebpackPlugin({
       title    : 'DarwinBots.js',
-      template : './app/index.html',
+      template : './app/devIndex.html',
       inject   : 'body'
     })
   ]
